@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "devDependencies": {
     "apidoc": "^0.14.0",
-    "bower": "0.6.x",
+    "bower": "^1.6.5",
     "del": "^2.2.0",
     "errorhandler": "^1.4.2",
     "gulp": "^3.9.0",
@@ -50,6 +50,7 @@
     "socket.io": "^1.4.4"
   },
   "scripts": {
-    "start": "node server/server.js"
+    "start": "node server/server.js",
+    "postinstall": "bower install"
   }
 }
