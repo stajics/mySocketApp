@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "async": "^1.5.2",
+    "bower": "^1.6.5",
     "body-parser": "^1.14.2",
     "chalk": "^1.1.1",
     "compression": "^1.6.0",
