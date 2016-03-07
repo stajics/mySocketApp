@@ -11,7 +11,7 @@ angular.module('mySocketApp')
 
     $scope.send = function(){
       $http({
-        url: "http://localhost:9000/send",
+        url: "https://arcane-bastion-79114.herokuapp.com/send",
         method: "POST",
         headers: {'authorization' : 'Bearer '+ UserService.getUser().token},
         data: {'msg' : $scope.msgToSend}
@@ -21,7 +21,7 @@ angular.module('mySocketApp')
     };
 
     $http({
-      url: "http://localhost:9000/activeUser",
+      url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
       method: "GET",
       headers: {'authorization' : 'Bearer '+ UserService.getUser().token}
     }).then(function(response){
