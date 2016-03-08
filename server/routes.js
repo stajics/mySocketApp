@@ -34,6 +34,13 @@ function createToken(username) {
   return apiToken;
 }
 
+
+function addActiveUser(data){
+  var newActiveUser = new ActiveUser({
+    username: data
+  });
+  newActiveUser.save();
+}
 //Login check (return token on succes)
 router.post('/login', function(req, res) {
 
@@ -50,6 +57,7 @@ router.post('/login', function(req, res) {
     } else {
       console.log('Length : ' + user.length);
       if (user.length === 1) {
+        addActiveUser(req.body.username);
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.status(200);

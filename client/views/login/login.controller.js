@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('mySocketApp')
-  .controller('LoginCtrl', function($scope, Socket, $http, UserService,$window) {
+  .controller('LoginCtrl', function($scope, Socket, $http, UserService,$window, $state) {
 
-    var $myDiv = $('#myDiv');
+    var $myDiv = $('#activeUsers');
+
     Socket.on('updateActiveUsers', function(data) {
       $myDiv.html(data);
     });
@@ -12,14 +13,13 @@ angular.module('mySocketApp')
 
     //Login request (save token on succes)
     $scope.login = function() {
-
       var body = {
         'username': $scope.username,
         'password': $scope.password
       };
-
       $http({
-        url: "https://arcane-bastion-79114.herokuapp.com/login",
+        // url: "https://arcane-bastion-79114.herokuapp.com/login",
+        url: "http://localhost:9000/login",
         method: "POST",
         data: body
       }).then(function(response) {
@@ -29,7 +29,9 @@ angular.module('mySocketApp')
           console.log(response.data.apiToken);
           UserService.getUser().username = response.data.username;
           UserService.getUser().token = response.data.apiToken;
-          Socket.emit('addUser', response.data.username);
+          Socket.emit('logUser', response.data.username);
+          Socket.emit('updateActiveUsers');
+          $state.go('chat');
         }
       }, function(response) {
         console.log(response.status);
@@ -39,7 +41,8 @@ angular.module('mySocketApp')
       //Logoff user on close window
       angular.element($window).on("beforeunload", function(){
         $http({
-          url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
+          //url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
+          url: "http://localhost:9000/activeUser",
           method: "DELETE",
           headers: {'authorization' : 'Bearer '+ UserService.getUser().token}
         }).then(function(response){

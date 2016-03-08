@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="mySocketApp">
+<html ng-app="mySocketApp" ng-controller="IndexCtrl">
   <head>
 
     <base href="/">
@@ -16,38 +16,42 @@
     <!-- bower:css -->
     <!-- endinject -->
 
-    <link rel="stylesheet" href="styles/css/app.css">
-
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.css">
     <!-- endbuild -->
 
   </head>
   <body>
 
-    <strong>mySocketApp</strong>
+    <header ng-include="'header.html'"></header>
+
     <div ui-view></div>
 
     <script src="socket.io/socket.io.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <!-- build:js app.js -->
 
     <!-- bower:js -->
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-socket-io/socket.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <!-- endinject -->
 
     <!-- inject:js -->
     <script src="app.js"></script>
-    <script src="views/login/login.js"></script>
-    <script src="views/login/login.controller.js"></script>
-    <script src="views/homeExample/homeEx.js"></script>
-    <script src="views/homeExample/homeEx.controller.js"></script>
-    <script src="views/home/home.js"></script>
-    <script src="views/home/home.controller.js"></script>
-    <script src="views/chat/chat.js"></script>
-    <script src="views/chat/chat.controller.js"></script>
-    <script src="services/socket/socket.service.js"></script>
     <script src="services/UserService.js"></script>
+    <script src="services/socket/socket.service.js"></script>
+    <script src="views/chat/chat.controller.js"></script>
+    <script src="views/chat/chat.js"></script>
+    <script src="views/home/home.controller.js"></script>
+    <script src="views/home/home.js"></script>
+    <script src="views/homeExample/homeEx.controller.js"></script>
+    <script src="views/homeExample/homeEx.js"></script>
+    <script src="views/index/index.controller.js"></script>
+    <script src="views/login/login.controller.js"></script>
+    <script src="views/login/login.js"></script>
     <!-- endinject -->
 
     <!-- endbuild -->

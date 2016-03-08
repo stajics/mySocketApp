@@ -1,4 +1,11 @@
 <input type="text" class="form-control" placeholder="..." ng-model="msgToSend"></input><br>
 <button type="button" ng-click="send()">SendMsg</button>
+<h1>Chat:</h1>
 <div id="msg">
+</div>
+<h2>Active users:</h2>
+<div id="activeUsers">
+  <ul>
+    <li ng-repeat="user in activeUsers track by $index" class="list-group-item">{{item}}</li>
+  </ul>
 </div>
