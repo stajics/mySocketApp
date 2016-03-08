@@ -51,7 +51,7 @@ router.post('/login', function(req, res) {
       console.log('Length : ' + user.length);
       if (user.length === 1) {
         res.setHeader('Content-Type', 'application/json');
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:9000');
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.status(200);
         res.send({
           username: req.body.username,
