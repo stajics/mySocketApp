@@ -38,6 +38,7 @@ angular.module('mySocketApp')
 
       //Logoff user on close window
       angular.element($window).on("beforeunload", function(){
+         console.log("WINDOW CLOSING!");
         $http({
           url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
           method: "DELETE",
