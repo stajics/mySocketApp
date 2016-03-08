@@ -18,8 +18,8 @@ angular.module('mySocketApp')
         'password': $scope.password
       };
       $http({
-        // url: "https://arcane-bastion-79114.herokuapp.com/login",
-        url: "http://localhost:9000/login",
+        url: "https://arcane-bastion-79114.herokuapp.com/login",
+        // url: "http://localhost:9000/login",
         method: "POST",
         data: body
       }).then(function(response) {
@@ -41,8 +41,8 @@ angular.module('mySocketApp')
       //Logoff user on close window
       angular.element($window).on("beforeunload", function(){
         $http({
-          //url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
-          url: "http://localhost:9000/activeUser",
+          url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
+          // url: "http://localhost:9000/activeUser",
           method: "DELETE",
           headers: {'authorization' : 'Bearer '+ UserService.getUser().token}
         }).then(function(response){
