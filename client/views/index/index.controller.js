@@ -7,8 +7,8 @@ angular.module('mySocketApp')
     $scope.logOff = function(){
       if(UserService.getUser().loggedIn === true){
         $http({
-          url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
-          // url: "http://localhost:9000/activeUser",
+          // url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
+          url: "http://localhost:9000/activeUser",
           method: "DELETE",
           headers: {'authorization' : 'Bearer '+ UserService.getUser().token}
         }).then(function(response){
