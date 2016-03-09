@@ -26,10 +26,6 @@ module.exports = function(io) {
       io.sockets.emit('sendMsg', data);
     });
 
-    socket.on('logUser', function(data) {
-      io.sockets.emit('logUser', data);
-    });
-
     socket.on('updateActiveUsers', function() {
       var users = ActiveUser.find(function(err, user) {
         io.sockets.emit('updateActiveUsers', user.map(function(u) {

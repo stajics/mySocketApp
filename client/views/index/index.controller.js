@@ -13,7 +13,6 @@ angular.module('mySocketApp')
           headers: {'authorization' : 'Bearer '+ UserService.getUser().token}
         }).then(function(response){
           Socket.emit('updateActiveUsers');
-          Socket.emit('logUser', "Anonymous");
           console.log('LOGGED OFF: ' + UserService.getUser().username);
           UserService.clearStorage();
           $state.reload();
@@ -21,17 +20,13 @@ angular.module('mySocketApp')
       }
     };
 
-    $scope.loggedUser = "Anonymous";
-
-    Socket.on('logUser', function(data) {
-      $scope.loggedUser = data;
-    });
 
     $scope.$watch(function(){
       return UserService.getUser().token;
     }, function(v){
       if(v === null){
         UserService.clearStorage();
+        $state.reload();
         console.log("NO TOKEN!!!");
       }else{
         console.log(v);

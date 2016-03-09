@@ -25,7 +25,6 @@ angular.module('mySocketApp')
           UserService.setUsername(response.data.username);
           UserService.setToken(response.data.apiToken);
           UserService.setLoggedIn(true);
-          Socket.emit('logUser', response.data.username);
           Socket.emit('updateActiveUsers');
           $state.go('main.chat');
         }

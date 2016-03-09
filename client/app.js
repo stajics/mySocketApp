@@ -21,7 +21,7 @@ angular.module('mySocketApp', [
             if(UserService.getUser().token !== null){
               return $http({
                url: "https://arcane-bastion-79114.herokuapp.com/checkToken",
-                // url: "http://localhost:9000/checkToken",
+                //  url: "http://localhost:9000/checkToken",
                 method: "GET",
                 headers: {'authorization' : 'Bearer '+ UserService.getUser().token}
               }).then(function(response){
@@ -49,7 +49,9 @@ angular.module('mySocketApp', [
     $rootScope.$on('$stateChangeStart',
       function(event, toState, toParams, fromState, fromParams) {
         if(UserService.getUser().loggedIn === true){
-          Socket.emit('logUser', UserService.getUser().username);
+          $rootScope.loggedUsername = UserService.getUser().username || 'Anonymous';
+        } else {
+          $rootScope.loggedUsername = 'Anonymous';
         }
         if(UserService.getUser().loggedIn === true && toState.name==="main.login"){
           event.preventDefault();

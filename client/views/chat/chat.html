@@ -1,5 +1,5 @@
-<input type="text" class="form-control" placeholder="..." ng-model="msgToSend"></input><br>
-<button type="button" ng-click="send()">SendMsg</button>
+<input type="text" class="form-control" placeholder="..." ng-model="msgToSend" ng-hide="!loggedIn"></input><br>
+<button type="button" ng-click="send()" ng-hide="!loggedIn">SendMsg</button>
 <h1>Chat:</h1>
 <div id="msg">
 </div>
