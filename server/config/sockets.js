@@ -21,10 +21,6 @@ module.exports = function(io) {
     socket.connectDate = new Date();
     socket.ip = (socket.handshake.address) ? socket.handshake.address : null;
 
-    // sockets inserts
-    socket.on('sendMsg', function(data) {
-      io.sockets.emit('sendMsg', data);
-    });
 
     socket.on('updateActiveUsers', function() {
       var users = ActiveUser.find(function(err, user) {

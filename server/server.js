@@ -10,30 +10,28 @@ var config = require('./config/environment');
 
 var app = express();
 var server = require('http').createServer(app);
-var socket = require('socket.io')(server, { serveClient: true });
+var socket = require('socket.io')(server, {
+  serveClient: true
+});
 require('./config/sockets.js')(socket);
 
 require('./config/express')(app);
-var routes = require('./routes');
-app.use('/',routes);
+var routes = require('./routes')(socket);
+app.use('/', routes);
 
-server.listen(config.port, config.ip, function () {
+server.listen(config.port, config.ip, function() {
 
 
-// //mongoose.connect('mongodb://localhost:27017/myDB');
-// mongoose.connect('mongodb://stajics:srle111@ds019488.mlab.com:19488/users');
-// console.log(mongoose.connection.readyState);
-//
-// var TestUsers = mongoose.model('TestUsers',{name: String});
-// var peter = new TestUsers({ name: 'Peter' });
-// //peter.save();
+  // //mongoose.connect('mongodb://localhost:27017/myDB');
+  // mongoose.connect('mongodb://stajics:srle111@ds019488.mlab.com:19488/users');
+  // console.log(mongoose.connection.readyState);
+  //
+  // var TestUsers = mongoose.model('TestUsers',{name: String});
+  // var peter = new TestUsers({ name: 'Peter' });
+  // //peter.save();
 
   console.log(
-    chalk.red('\nExpress server listening on port ')
-    + chalk.yellow('%d')
-    + chalk.red(', in ')
-    + chalk.yellow('%s')
-    + chalk.red(' mode.\n'),
+    chalk.red('\nExpress server listening on port ') + chalk.yellow('%d') + chalk.red(', in ') + chalk.yellow('%s') + chalk.red(' mode.\n'),
     config.port,
     app.get('env')
   );
@@ -44,4 +42,7 @@ server.listen(config.port, config.ip, function () {
 
 });
 
-module.exports = server;
+module.exports = {
+  'server': server,
+  'socket': socket
+};

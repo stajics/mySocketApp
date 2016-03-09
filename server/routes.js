@@ -3,7 +3,6 @@
 var config = require('./config/environment');
 var express = require('express');
 var router = express.Router();
-
 var mongoose = require('./config/mongoose.js');
 
 //JWTs
@@ -15,6 +14,8 @@ var secret = 'sifra';
 var ActiveUser = mongoose.model('activeUsers');
 var User = mongoose.model('users');
 var ValidToken = mongoose.model('validTokens');
+
+module.exports = function(socket){
 
 function createToken(username) {
   var apiToken = jwt.sign({
@@ -115,9 +116,10 @@ router.post('/login', function(req, res) {
     res.send(req.user.username);
   });
 
+
   router.post('/send',jwtExpress({secret: 'sifra', isRevoked: isRevokedCallback}), function(req, res) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send(req.user.username + " : " + req.body.msg);
+    socket.sockets.emit('sendMsg', req.user.username + " : " + req.body.msg);
+    res.status(200).send();
   });
 
   router.get('/', function(req, res) {
@@ -137,7 +139,10 @@ router.post('/login', function(req, res) {
   router.get('/:url(api|app|bower_components|assets)/*', function(req, res) {
     res.status(404).end();
   });
-module.exports = router;
+
+  return router;
+};
+
 // module.exports = function (app) {
 //
 //   // API
