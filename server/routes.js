@@ -14,18 +14,7 @@ var secret = 'sifra';
 //mongoose models
 var ActiveUser = mongoose.model('activeUsers');
 var User = mongoose.model('users');
-
-router.get('/', function(req, res) {
-  res.sendFile(
-    app.get('appPath') + '/index.html', {
-      root: config.root
-    }
-  );
-});
-
-router.get('/:url(api|app|bower_components|assets)/*', function(req, res) {
-  res.status(404).end();
-});
+var ValidToken = mongoose.model('validTokens');
 
 function createToken(username) {
   var apiToken = jwt.sign({
@@ -34,6 +23,14 @@ function createToken(username) {
   return apiToken;
 }
 
+//adds token id to db
+function addIat(token){
+  var decoded = jwt.verify(token, secret);
+  var newValidToken = new ValidToken({
+    tokenId: decoded.iat
+  });
+  newValidToken.save();
+}
 
 function addActiveUser(data){
   var newActiveUser = new ActiveUser({
@@ -41,6 +38,27 @@ function addActiveUser(data){
   });
   newActiveUser.save();
 }
+
+//For checking if token is valid
+function isRevokedCallback(req, payload, done){
+  var validTokenIds = [];
+  ValidToken.find(function(err, tokens) {
+  validTokenIds =  tokens.map(function(token){
+      return token.tokenId;
+    });
+    if(validTokenIds.indexOf(payload.iat) !== -1){
+      console.log("TOKEN VALID");
+      return done(null, false);
+    }else{
+      console.log("TOKEN INVALID");
+      return done(null, true);
+    }
+  });
+
+
+
+}
+
 //Login check (return token on succes)
 router.post('/login', function(req, res) {
 
@@ -61,9 +79,11 @@ router.post('/login', function(req, res) {
         res.setHeader('Content-Type', 'application/json');
         res.setHeader('Access-Control-Allow-Origin', '*');
         res.status(200);
+        var newToken = createToken(req.body.username);
+        addIat(newToken);
         res.send({
           username: req.body.username,
-          apiToken: createToken(req.body.username)
+          apiToken: newToken
         });
       } else {
         res.setHeader('Content-Type', 'text/plain');
@@ -72,16 +92,11 @@ router.post('/login', function(req, res) {
       res.end();
     }
   });
-  // var peter = new User({ username: 'Peter', password: 'peter111' });
-  // var sam = new User({ username: 'Sam', password: 'sam111' });
-  // var molly = new User({ username: 'Molly', password: 'molly111' });
-  // peter.save();
-  // sam.save();
-  // molly.save();
+
 });
 
   //Logoff user (token still active!!!)
-  router.delete('/activeUser',jwtExpress({secret: 'sifra'}), function(req, res) {
+  router.delete('/activeUser',jwtExpress({secret: 'sifra', isRevoked: isRevokedCallback}), function(req, res) {
     ActiveUser.find({'username' : req.user.username}).remove(function(err,removed){
       if(removed){
         res.status(200).send();
@@ -89,15 +104,38 @@ router.post('/login', function(req, res) {
     });
   });
 
+  //Check if user logged in
+  router.get('/checkToken',jwtExpress({secret: 'sifra', isRevoked: isRevokedCallback}), function(req, res) {
+    res.setHeader('Content-Type', 'text/plain');
+    res.status(200).send();
+  });
 
-  router.get('/activeUser',jwtExpress({secret: 'sifra'}), function(req, res) {
+  router.get('/activeUser',jwtExpress({secret: 'sifra', isRevoked: isRevokedCallback}), function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.send(req.user.username);
   });
 
-  router.post('/send',jwtExpress({secret: 'sifra'}), function(req, res) {
+  router.post('/send',jwtExpress({secret: 'sifra', isRevoked: isRevokedCallback}), function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.send(req.user.username + " : " + req.body.msg);
+  });
+
+  router.get('/', function(req, res) {
+    //  var pera = new User({ username: 'pera', password: 'pera111' });
+    //  var sima = new User({ username: 'sima', password: 'sima111' });
+    // // var molly = new User({ username: 'Molly', password: 'molly111' });
+    //  pera.save();
+    //  sima.save();
+    // // molly.save();
+    res.sendFile(
+      app.get('appPath') + '/index.html', {
+        root: config.root
+      }
+    );
+  });
+
+  router.get('/:url(api|app|bower_components|assets)/*', function(req, res) {
+    res.status(404).end();
   });
 module.exports = router;
 // module.exports = function (app) {

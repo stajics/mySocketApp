@@ -3,7 +3,7 @@
 angular.module('mySocketApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('home',{
+      .state('main.home',{
           url: '/home',
           templateUrl: 'views/home/home.html',
           controller: 'HomeCtrl',

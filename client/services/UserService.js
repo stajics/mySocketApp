@@ -1,16 +1,24 @@
-angular.module("mySocketApp").factory("UserService", function() {
-
-  var user = {
-    'username' : '',
-    'token' : ''
-  };
+angular.module("mySocketApp").factory("UserService", function(localStorageService) {
 
   return {
-    getUser: function() {
-      return user;
+    setUsername: function(value) {
+      localStorageService.set('username', value);
     },
-    loginUser: function(userToLogin) {
-      user.username = userToLogin.username;
+    setToken: function(value) {
+      localStorageService.set('token', value);
+    },
+    setLoggedIn: function(value) {
+      localStorageService.set('loggedIn', value);
+    },
+    clearStorage: function() {
+      localStorageService.clearAll();
+    },
+    getUser: function() {
+      return {
+        'username': localStorageService.get('username'),
+        'token': localStorageService.get('token'),
+        'loggedIn': localStorageService.get('loggedIn')
+      };
     }
   };
 });

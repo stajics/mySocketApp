@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('mySocketApp')
-  .controller('ChatCtrl', function ($scope,Socket, $http, UserService) {
+  .controller('ChatCtrl', function ($scope,$rootScope ,Socket, $http, UserService) {
 
+    $rootScope.loggedIn = UserService.getUser().loggedIn;
     var $msgDiv = $('#msg');
     var $activeUsers = $('#activeUsers');
     $scope.activeUsers = [];
 
     Socket.on('updateActiveUsers', function(data) {
       $scope.activeUsers = data;
-      $activeUsers.html(data);
     });
 
     Socket.on('sendMsg', function(data){
@@ -20,8 +20,8 @@ angular.module('mySocketApp')
 
     $scope.send = function(){
       $http({
-       url: "https://arcane-bastion-79114.herokuapp.com/send",
-        // url: "http://localhost:9000/send",
+      //  url: "https://arcane-bastion-79114.herokuapp.com/send",
+        url: "http://localhost:9000/send",
         method: "POST",
         headers: {'authorization' : 'Bearer '+ UserService.getUser().token},
         data: {'msg' : $scope.msgToSend}
@@ -29,7 +29,7 @@ angular.module('mySocketApp')
         Socket.emit('sendMsg',response.data);
       });
     };
-
+    console.log("Userservice.loggedIn " + UserService.getUser().loggedIn);
     // $http({
     //   //url: "https://arcane-bastion-79114.herokuapp.com/activeUser",
     //   url: "http://localhost:9000/activeUser",

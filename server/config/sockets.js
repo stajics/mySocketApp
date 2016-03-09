@@ -9,6 +9,9 @@ var User = mongoose.model('users', {
   username: String,
   password: String
 });
+var ValidTokens = mongoose.model('validTokens', {
+  tokenId: Number
+});
 
 
 module.exports = function(io) {

@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('mySocketApp')
-  .config(function ($stateProvider) {
+  .config(function($stateProvider) {
     $stateProvider
-      .state('chat',{
-          url: '/chat',
-          templateUrl: 'views/chat/chat.html',
-          controller: 'ChatCtrl',
+      .state('main.chat', {
+        url: '/chat',
+        templateUrl: 'views/chat/chat.html',
+        controller: 'ChatCtrl'
       });
   });
