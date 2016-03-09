@@ -20,8 +20,8 @@ angular.module('mySocketApp', [
           loggedIn: function(localStorageService,$http, UserService) {
             if(UserService.getUser().token !== null){
               return $http({
-              //  url: "https://arcane-bastion-79114.herokuapp.com/checkToken",
-                url: "http://localhost:9000/checkToken",
+               url: "https://arcane-bastion-79114.herokuapp.com/checkToken",
+                // url: "http://localhost:9000/checkToken",
                 method: "GET",
                 headers: {'authorization' : 'Bearer '+ UserService.getUser().token}
               }).then(function(response){

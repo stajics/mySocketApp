@@ -11,8 +11,8 @@ angular.module('mySocketApp')
         'password': $scope.password
       };
       $http({
-        // url: "https://arcane-bastion-79114.herokuapp.com/login",
-        url: "http://localhost:9000/login",
+        url: "https://arcane-bastion-79114.herokuapp.com/login",
+        // url: "http://localhost:9000/login",
         method: "POST",
         data: body
       }).then(function(response) {
